@@ -3,10 +3,10 @@ package minesweeper.windows;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class EndScreen extends Application {
+public class EndWindow extends Application {
     private Stage stage;
 
-    public EndScreen(Stage stage) {
+    public EndWindow(Stage stage) {
         this.stage = stage;
     }
 
