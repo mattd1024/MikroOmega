@@ -62,10 +62,17 @@ public class Game {
      * int r = row
      * int c = col
      */
-    // TODO finish adjacent mines counting logic
     public int countAdjacentMines(int r, int c) {
         int adjacentMines = 0;
-
+        for (int dr = -1; dr <= 1; dr++) {
+            for (int dc = -1; dc <= 1; dc++) {
+                int nr = r + dr;
+                int nc = r + dc;
+                if (inBounds(nr, nc) && board[nr][nc].isMine()) {
+                    adjacentMines++;
+                }
+            }
+        }
         return adjacentMines;
     }
 
