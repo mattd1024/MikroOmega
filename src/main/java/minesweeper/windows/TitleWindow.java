@@ -16,14 +16,10 @@ import minesweeper.model.Difficulty;
 public class TitleWindow {
     private Stage stage;
 
-    public TitleWindow(Stage stage) {
-        this.stage = stage;
-    }
-
     /**
      * Show the menu screen. Contains: start button, choose difficulty, end button.
      */
-    public void show() {
+    public void show(Stage stage) {
         // Main title
         Label mainLabel = new Label("Minesweeper");
         mainLabel.setFont(Font.font("MONOSPACE", FontWeight.BOLD, 16));
@@ -55,7 +51,8 @@ public class TitleWindow {
         Button startButton = new Button("Start");
         startButton.setOnAction(e -> {
             Difficulty chosenDifficulty = (Difficulty) group.getSelectedToggle().getUserData();
-            new MainWindow().show(stage, chosenDifficulty);
+//            new MainWindow().show(stage, chosenDifficulty);
+            System.out.println(chosenDifficulty.getCols());
         });
 
         // Assign all created components to root

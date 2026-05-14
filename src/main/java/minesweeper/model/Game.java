@@ -33,7 +33,7 @@ public class Game {
      * safeC = Columns coordinate of the first player click
      */
     public void placeMines(int safeR, int safeC) {
-        // Place mineas around the board
+        // Place mines around the board
         Random rng = new Random();
         int placed = 0;
         while (placed < totalMines) {
@@ -82,10 +82,42 @@ public class Game {
      */
     // TODO check if the inbounds check is correct
     public boolean inBounds(int r, int c) {
-        if ((r >= 0 && r <= rows) && (c >= 0 && c <= cols)) {
+        if ((r > 0 && r < rows) && (c > 0 && c < cols)) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public Cell[][] getBoard() {
+        return board;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getTotalMines() {
+        return totalMines;
+    }
+
+    public boolean isFirstClick() {
+        return isFirstClick;
+    }
+
+    public void setFirstClick(boolean firstClick) {
+        isFirstClick = firstClick;
     }
 }
