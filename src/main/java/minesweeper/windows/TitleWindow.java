@@ -14,29 +14,36 @@ import javafx.stage.Stage;
 import minesweeper.model.Difficulty;
 
 public class TitleWindow {
-    private Stage stage;
-
     /**
      * Show the menu screen. Contains: start button, choose difficulty, end button.
      */
-    public void show(Stage stage) {
+    public Scene getScene(Stage stage) {
         // Main title
         Label mainLabel = new Label("Minesweeper");
         mainLabel.setFont(Font.font("MONOSPACE", FontWeight.BOLD, 16));
 
-        // Choose difficulty
+        // Choose difficulty styling
         ToggleGroup group = new ToggleGroup();
         RadioButton easy = new RadioButton("Easy");
         RadioButton medium = new RadioButton("Medium");
         RadioButton hard = new RadioButton("Hard");
+
         easy.setToggleGroup(group);
         medium.setToggleGroup(group);
         hard.setToggleGroup(group);
+
         easy.setSelected(true);
+
         easy.setMaxWidth(Double.MAX_VALUE);
         medium.setMaxWidth(Double.MAX_VALUE);
         hard.setMaxWidth(Double.MAX_VALUE);
 
+        // Choose difficulty logic
+        easy.setUserData(Difficulty.EASY);
+        medium.setUserData(Difficulty.MEDIUM);
+        hard.setUserData(Difficulty.HARD);
+
+        // Difficulty options
         VBox difficultyOptions = new VBox(easy,medium,hard);
         difficultyOptions.setPadding(new Insets(10));
         difficultyOptions.setAlignment(Pos.CENTER);
@@ -51,8 +58,7 @@ public class TitleWindow {
         Button startButton = new Button("Start");
         startButton.setOnAction(e -> {
             Difficulty chosenDifficulty = (Difficulty) group.getSelectedToggle().getUserData();
-//            new MainWindow().show(stage, chosenDifficulty);
-            System.out.println(chosenDifficulty.getCols());
+            stage.setScene(new MainWindow().getScene(stage, chosenDifficulty));
         });
 
         // Assign all created components to root
@@ -60,11 +66,7 @@ public class TitleWindow {
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(40));
 
-        // Stage configuration
-        stage.setScene(new Scene(root,300,350));
-        stage.setTitle("Minesweeper");
-        stage.setHeight(350);
-        stage.setWidth(300);
-        stage.show();
+        // Return finished TitleWindow scene
+        return new Scene(root, 300, 350);
     }
 }

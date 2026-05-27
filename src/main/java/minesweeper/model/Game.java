@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Game {
     private Difficulty difficulty;
-    private final Cell[][] board;
+    private final Cell[][] cells;
     private final int rows;
     private final int cols;
     private final int totalMines;
@@ -18,10 +18,10 @@ public class Game {
         this.isFirstClick = true;
 
         // Create empty board
-        this.board = new Cell[rows][cols];
+        this.cells = new Cell[rows][cols];
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                board[r][c] = new Cell();
+                cells[r][c] = new Cell();
             }
         }
     }
@@ -40,18 +40,17 @@ public class Game {
             int r = rng.nextInt(rows);
             int c = rng.nextInt(cols);
             // If the randomly selected cell is not a mine and is not inside a safe zone, place a mine in it
-            if (!board[r][c].isMine() && (Math.abs(r - safeR) > 1 || Math.abs(c - safeC) > 1)) {
-                board[r][c].setMine(true);
+            if (!cells[r][c].isMine() && (Math.abs(r - safeR) > 1 || Math.abs(c - safeC) > 1)) {
+                cells[r][c].setMine(true);
                 placed++;
             }
         }
 
-        // TODO finish calculating adjacent mines for empty cells
         // Calculate adjacent mines to every non-mine cell
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                if (!board[r][c].isMine()) {
-                    board[r][c].setAdjacentMines(countAdjacentMines(r, c));
+                if (!cells[r][c].isMine()) {
+                    cells[r][c].setAdjacentMines(countAdjacentMines(r, c));
                 }
             }
         }
@@ -67,8 +66,8 @@ public class Game {
         for (int dr = -1; dr <= 1; dr++) {
             for (int dc = -1; dc <= 1; dc++) {
                 int nr = r + dr;
-                int nc = r + dc;
-                if (inBounds(nr, nc) && board[nr][nc].isMine()) {
+                int nc = c + dc;
+                if (inBounds(nr, nc) && cells[nr][nc].isMine()) {
                     adjacentMines++;
                 }
             }
@@ -80,14 +79,29 @@ public class Game {
      * Checks if the given coordinates r and c are valid for our board
      * @return true = valid, false = invalid
      */
-    // TODO check if the inbounds check is correct
     public boolean inBounds(int r, int c) {
-        if ((r > 0 && r < rows) && (c > 0 && c < cols)) {
+        if (r >= 0 && r < rows && c >= 0 && c < cols) {
             return true;
         } else {
             return false;
         }
     }
+
+    /**
+     * Check if the game is won
+     * @return
+     */
+    public boolean isWon() {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (!cells[r][c].isMine() && !cells[r][c].isRevealed()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     public Difficulty getDifficulty() {
         return difficulty;
@@ -97,8 +111,8 @@ public class Game {
         this.difficulty = difficulty;
     }
 
-    public Cell[][] getBoard() {
-        return board;
+    public Cell[][] getCells() {
+        return cells;
     }
 
     public int getRows() {
@@ -120,4 +134,5 @@ public class Game {
     public void setFirstClick(boolean firstClick) {
         isFirstClick = firstClick;
     }
+
 }

@@ -8,6 +8,10 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) {
-        new TitleWindow().show(stage);
+        stage.setScene(new TitleWindow().getScene(stage));
+        stage.setTitle("Minesweeper");
+        stage.show();
+
+        //TODO add styling to everything
     }
 }

@@ -1,17 +1,23 @@
 package minesweeper.windows;
 
-import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import minesweeper.model.Difficulty;
 
-public class EndWindow extends Application {
-    private Stage stage;
+public class EndWindow {
 
-    public EndWindow(Stage stage) {
-        this.stage = stage;
-    }
+    public Scene getScene(Stage stage, double totalTime, Difficulty chosenDifficulty, boolean won) {
+        // Labels
+        Label gameStatusLabel = new Label(won ? "You won!" : "You lost!");
+        Label totalTimeLabel = new Label("Total time: " + String.format("%.2f", totalTime) + "s");
+        Label difficultyLabel = new Label("Difficulty: " + chosenDifficulty.toString());
 
-    @Override
-    public void start(Stage stage) throws Exception {
+        // Root
+        VBox root = new VBox(gameStatusLabel, totalTimeLabel, difficultyLabel);
 
+        // Scene
+        return new Scene(root, 300, 350);
     }
 }
