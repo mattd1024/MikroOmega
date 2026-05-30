@@ -27,8 +27,8 @@ Launch main.java from src/java/minesweeper/main.java
 - Right click to flag
 
 ## Dependencies (Maven)
-- JavaFX 21
-- FXThemes 1.6.0
+- JavaFX 21 - GUI library
+- FXThemes 1.6.0 - Windows topbar styling
 
 
 
