@@ -13,6 +13,8 @@ import minesweeper.model.Cell;
 import minesweeper.model.Difficulty;
 import minesweeper.model.Game;
 
+import java.util.Objects;
+
 public class MainWindow {
     private Game game;
     private Stage stage;
@@ -20,9 +22,8 @@ public class MainWindow {
     private double elapsedTime;
     private Timeline timeline;
 
-    private Button cellButtons[][]; // For visually editing the cells (for logic, use game.getBoard())
+    private Button[][] cellButtons; // For visually editing the cells (for logic, use game.getBoard())
     private Label flagLabel;
-    private Button resetButton;
 
     /**
      * Show the main window. Contains: main mine sweeping field
@@ -42,7 +43,7 @@ public class MainWindow {
         flagLabel = new Label("🚩 " + game.getRemainingFlags());
 
         // Reset button
-        resetButton = new Button("RESET");
+        Button resetButton = new Button("RESET");
         resetButton.setOnAction(e -> {
             elapsedTime = 0;
             timeline.stop();
@@ -93,7 +94,7 @@ public class MainWindow {
 
         // Load CSS
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/mainWindow.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/mainWindow.css")).toExternalForm());
 
         // Return finished TitleWindow scene
         return scene;
@@ -101,9 +102,6 @@ public class MainWindow {
 
     /**
      * Creates grid buttons
-     * @param r
-     * @param c
-     * @return
      */
     public Button createButton(int r, int c) {
         Button btn = new Button();
@@ -124,13 +122,11 @@ public class MainWindow {
 
     /**
      * Handles left clicking
-     * @param r
-     * @param c
      */
     public void handleLeftClick(int r, int c) {
         Cell cell = game.getCells()[r][c];
 
-        // 1. Cell is flagged || revealed -> do nothingh
+        // 1. Cell is flagged || revealed -> do nothing
         if (cell.isFlagged() || cell.isRevealed()) {
             return;
         }
@@ -174,14 +170,12 @@ public class MainWindow {
     }
 
     /**
-     * Handles right clicking
-     * @param r
-     * @param c
+     * Handles right-clicking
      */
     public void handleRightClick(int r, int c) {
         Cell cell = game.getCells()[r][c];
 
-        // 1. Cell is revealed -> do nothingh
+        // 1. Cell is revealed -> do nothing
         if (cell.isRevealed()) {
             return;
         }
@@ -214,8 +208,6 @@ public class MainWindow {
 
     /**
      * Updates the UI of a cell based on its stats
-     * @param r
-     * @param c
      */
     public void updateButtonVisuals(int r, int c) {
         Cell cell = game.getCells()[r][c];

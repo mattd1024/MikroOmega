@@ -79,8 +79,6 @@ public class Game {
 
     /**
      * Recursive method for revealing all empty cells around an empty cell
-     * @param r
-     * @param c
      */
     public void floodReveal(int r, int c) {
         // Check if the coordinates are valid
@@ -125,7 +123,6 @@ public class Game {
 
     /**
      * Check if the game is won
-     * @return
      */
     public boolean isWon() {
         for (int r = 0; r < rows; r++) {

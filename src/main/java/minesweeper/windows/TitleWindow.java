@@ -11,10 +11,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import minesweeper.model.Difficulty;
 
+import java.util.Objects;
+
 public class TitleWindow {
-    final int MAX_CUSTOM_ROWS = 30;
-    final int MAX_CUSTOM_COLS = 50;
-    final int MAX_CUSTOM_MINES = 1491;
+    private final int MAX_CUSTOM_ROWS = 30;
+    private final int MAX_CUSTOM_COLS = 50;
+    private final int MAX_CUSTOM_MINES = 1491;
 
     /**
      * Show the menu screen. Contains: start button, choose difficulty, end button.
@@ -112,7 +114,7 @@ public class TitleWindow {
 
         // Load CSS
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/titleWindow.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/titleWindow.css")).toExternalForm());
 
         // Return finished TitleWindow scene
         return scene;

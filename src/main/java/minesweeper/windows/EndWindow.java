@@ -6,6 +6,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import minesweeper.model.Difficulty;
 
+import java.util.Objects;
+
 public class EndWindow {
 
     public Scene getScene(Stage stage, double totalTime, Difficulty chosenDifficulty, boolean won) {
@@ -19,7 +21,7 @@ public class EndWindow {
 
         // Load CSS
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("/styles/endWindow.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/endWindow.css")).toExternalForm());
 
         // Return finished TitleWindow scene
         return scene;
