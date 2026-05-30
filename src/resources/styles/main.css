@@ -1,0 +1,100 @@
+.root {
+    -fx-font-family: "Nunito";
+    -fx-background-color: #0a0a0a;
+    -fx-font-size: 16;
+}
+
+/* Horizontal info box */
+.info-box {
+    -fx-padding: 8 12 8 12;
+    -fx-background-color: #0a0a0a;
+    -fx-alignment: center;
+}
+
+/* Info label */
+.info-label {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+    -fx-padding: 4 12 4 12;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+    -fx-pref-width: 90;
+    -fx-alignment: center;
+}
+
+/* Reset button */
+.reset-button {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+    -fx-padding: 4 16 4 16;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+}
+.reset-button:hover {
+    -fx-background-color: #2a2a2a;
+}
+
+/* Mine grid */
+.mine-grid {
+    -fx-hgap: 2;
+    -fx-vgap: 2;
+    -fx-padding: 2;
+}
+
+/* Mine cells */
+.mine-cell {
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+
+}
+.mine-cell-unrevealed {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+}
+.mine-cell-unrevealed:hover {
+    -fx-background-color: #2a2a2a;
+}
+.mine-cell-revealed {
+    -fx-background-color: #111111;
+    -fx-text-fill: white;
+}
+.mine-cell-flagged {
+    -fx-font-family: "Segoe UI Emoji";
+    -fx-background-color: #3a1a1a;
+    -fx-text-fill: red;
+}
+
+/* Colors for surrounding mines  */
+.num-1 {
+    -fx-text-fill: #5b8dd9;
+}
+.num-2 {
+    -fx-text-fill: #57c47a;
+}
+.num-3 {
+    -fx-text-fill: #e05c5c;
+}
+.num-4 {
+    -fx-text-fill: #8b6fd4;
+}
+.num-5 {
+    -fx-text-fill: #e07c3a;
+}
+.num-6 {
+    -fx-text-fill: #4ec9c9;
+}
+.num-7 {
+    -fx-text-fill: #e0e0e0;
+}
+.num-8 {
+    -fx-text-fill: #555555;
+}

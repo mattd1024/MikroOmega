@@ -1,0 +1,58 @@
+.root {
+    -fx-background-color: #0a0a0a;
+    -fx-font-family: "Nunito";
+    -fx-alignment: center;
+    -fx-spacing: 16;
+    -fx-padding: 40;
+    -fx-font-size: 16;
+}
+
+/* Status label */
+.status-label {
+    -fx-text-fill: white;
+    -fx-font-size: 2.5em;
+    -fx-font-weight: bold;
+}
+
+/* Info labels */
+.info-label {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 1em;
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 6 16 6 16;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+}
+
+/* Title button */
+.title-button {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+    -fx-padding: 6 24 6 24;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-font-size: 1em;
+}
+.title-button:hover {
+    -fx-background-color: #2a2a2a;
+}
+
+/* Exit button */
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #555555;
+    -fx-padding: 6 24 6 24;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-size: 0.9em;
+}
+.exit-button:hover {
+    -fx-text-fill: #aaaaaa;
+}

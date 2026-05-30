@@ -136,16 +136,17 @@ public class Game {
     }
 
     /**
-     * Reveals all cells
+     * Reveals all revealable cells
      */
     public void revealAll() {
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                cells[r][c].setRevealed(true);
+                if (!cells[r][c].isFlagged() &&  !cells[r][c].isRevealed()) {
+                    cells[r][c].setRevealed(true);
+                }
             }
         }
     }
-
 
     public Difficulty getDifficulty() {
         return difficulty;

@@ -1,19 +1,18 @@
 package minesweeper.windows;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import minesweeper.model.Difficulty;
 
 import java.util.Objects;
 
 public class TitleWindow {
+    private final int WINDOW_WIDTH = 400;
+    private final int WINDOW_HEIGHT = 450;
     private final int MAX_CUSTOM_ROWS = 30;
     private final int MAX_CUSTOM_COLS = 50;
     private final int MAX_CUSTOM_MINES = 1491;
@@ -22,9 +21,12 @@ public class TitleWindow {
      * Show the menu screen. Contains: start button, choose difficulty, end button.
      */
     public Scene getScene(Stage stage) {
-        // Main title
-        Label mainLabel = new Label("Minesweeper");
-        mainLabel.setFont(Font.font("MONOSPACE", FontWeight.BOLD, 26));
+        // Set window size
+        stage.setWidth(WINDOW_WIDTH);
+        stage.setHeight(WINDOW_HEIGHT);
+
+        // Title label
+        Label titleLabel = new Label("Minesweeper");
 
         // Choose difficulty buttons
         ToggleGroup group = new ToggleGroup();
@@ -33,12 +35,13 @@ public class TitleWindow {
         RadioButton hard = new RadioButton("Hard");
         RadioButton custom = new RadioButton("Custom");
 
-        //
+        // Assign buttons to radio group
         easy.setToggleGroup(group);
         medium.setToggleGroup(group);
         hard.setToggleGroup(group);
         custom.setToggleGroup(group);
 
+        // Set width of difficulties to max
         easy.setMaxWidth(Double.MAX_VALUE);
         medium.setMaxWidth(Double.MAX_VALUE);
         hard.setMaxWidth(Double.MAX_VALUE);
@@ -49,32 +52,37 @@ public class TitleWindow {
         medium.setUserData(Difficulty.MEDIUM);
         hard.setUserData(Difficulty.HARD);
 
+        // Select easy as default difficulty
         easy.setSelected(true);
 
         // Difficulty options
         VBox difficultyOptions = new VBox(easy,medium,hard,custom);
-        difficultyOptions.setPadding(new Insets(10));
         difficultyOptions.setAlignment(Pos.CENTER);
+        difficultyOptions.setPrefWidth(150);
 
         // Custom difficulty
-        Spinner<Integer> rowsSpinner = new Spinner<>(1, MAX_CUSTOM_ROWS, 0);
-        Spinner<Integer> colsSpinner = new Spinner<>(1, MAX_CUSTOM_COLS, 0);
+        Spinner<Integer> rowsSpinner = new Spinner<>(2, MAX_CUSTOM_ROWS, 0);
+        Spinner<Integer> colsSpinner = new Spinner<>(2, MAX_CUSTOM_COLS, 0);
         Spinner<Integer> minesSpinner = new Spinner<>(1, MAX_CUSTOM_MINES, 0);
 
         // Change width so the text next to them is visible
-        rowsSpinner.setPrefWidth(60);
-        colsSpinner.setPrefWidth(60);
-        minesSpinner.setPrefWidth(60);
+        rowsSpinner.setPrefWidth(65);
+        colsSpinner.setPrefWidth(65);
+        minesSpinner.setPrefWidth(65);
 
         // Make it possible to paste numbers into spinners
         rowsSpinner.setEditable(true);
         colsSpinner.setEditable(true);
         minesSpinner.setEditable(true);
 
-        HBox customDifficultyOptions = new HBox(
-                new Label("Rows: "), rowsSpinner,
-                new Label("Cols: "), colsSpinner,
-                new Label ("Mines: "), minesSpinner);
+        // Custom difficulty rows cols mines
+        VBox rowsDifficulty = new VBox(new Label("Rows"), rowsSpinner);
+        VBox colsDifficulty = new VBox(new Label("Cols"), colsSpinner);
+        VBox minesDifficulty = new VBox(new Label("Mines"), minesSpinner);
+
+        HBox customDifficultyOptions = new HBox(rowsDifficulty,colsDifficulty,minesDifficulty);
+
+        // Make spinners visible only if the custom radio button is selected
         customDifficultyOptions.visibleProperty().bind(custom.selectedProperty());
         customDifficultyOptions.managedProperty().bind(custom.selectedProperty());
 
@@ -106,15 +114,22 @@ public class TitleWindow {
             stage.close();
         });
 
+        // Add CSS
+        titleLabel.getStyleClass().add("title-label");
+        startButton.getStyleClass().add("start-button");
+        exitButton.getStyleClass().add("exit-button");
+        difficultyOptions.getStyleClass().add("difficulty-options");
+        customDifficultyOptions.getStyleClass().add("custom-difficulty-options");
+        rowsDifficulty.getStyleClass().add("spinner-box");
+        colsDifficulty.getStyleClass().add("spinner-box");
+        minesDifficulty.getStyleClass().add("spinner-box");
 
         // Assign all created components to root
-        VBox root = new VBox(mainLabel, startButton, difficultyOptions, customDifficultyOptions, exitButton);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(40));
+        VBox root = new VBox(titleLabel, startButton, difficultyOptions, customDifficultyOptions, exitButton);
 
         // Load CSS
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/titleWindow.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/title.css")).toExternalForm());
 
         // Return finished TitleWindow scene
         return scene;

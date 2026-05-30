@@ -1,0 +1,121 @@
+.root {
+    -fx-font-family: "Nunito";
+    -fx-background-color: #0a0a0a;
+    -fx-font-size: 16;
+    -fx-alignment: top-center;
+    -fx-padding: 40 40 40 40;
+}
+
+/* Title label */
+.title-label {
+    -fx-text-fill: white;
+    -fx-font-size: 3em;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 20 0;
+}
+
+/* Start button */
+.start-button {
+    -fx-background-color: #1e1e1e;
+    -fx-text-fill: white;
+    -fx-padding: 6 24 6 24;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #2a2a2a;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-font-size: 1em;
+}
+.start-button:hover {
+    -fx-background-color: #2a2a2a;
+}
+
+/* Difficulty options */
+.difficulty-options {
+    -fx-spacing: 4;
+    -fx-padding: 10 0 0 0;
+}
+
+/* Radio buttons */
+.radio-button {
+    -fx-text-fill: #aaaaaa;
+    -fx-font-size: 1em;
+    -fx-alignment: center;
+    -fx-pref-width: 120;
+}
+.radio-button:selected {
+    -fx-text-fill: white;
+}
+.radio-button .radio {
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 20;
+    -fx-background-color: #1e1e1e;
+    -fx-background-radius: 20;
+}
+.radio-button:selected .radio {
+    -fx-border-color: white;
+}
+
+/* Custom difficulty options */
+.custom-difficulty-options {
+    -fx-spacing: 25;
+    -fx-alignment: center;
+}
+
+/* Spinners */
+.spinner-box {
+    -fx-alignment: center;
+}
+
+.spinner {
+    -fx-background-color: #1e1e1e;
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-pref-height: 28;
+    -fx-pref-width: 100;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-background-radius: 6;
+}
+
+.spinner .increment-arrow-button,
+.spinner .decrement-arrow-button {
+    -fx-background-color: #2a2a2a;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0 6 6 0;
+    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-padding: 4;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.spinner .increment-arrow,
+.spinner .decrement-arrow {
+    -fx-background-color: white;
+}
+
+/* Exit button */
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #555555;
+    -fx-padding: 6 24 6 24;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-font-size: 0.9em;
+}
+.exit-button:hover {
+    -fx-text-fill: #aaaaaa;
+}

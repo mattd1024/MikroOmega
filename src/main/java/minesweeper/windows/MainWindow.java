@@ -21,7 +21,6 @@ public class MainWindow {
     private Difficulty chosenDifficulty;
     private double elapsedTime;
     private Timeline timeline;
-
     private Button[][] cellButtons; // For visually editing the cells (for logic, use game.getBoard())
     private Label flagLabel;
 
@@ -33,14 +32,27 @@ public class MainWindow {
         this.chosenDifficulty = chosenDifficulty;
 
         // Change width and height of window based on cell count
-        stage.setWidth(chosenDifficulty.getCols() * 35);
-        stage.setHeight(chosenDifficulty.getRows() * 35 + 50);
+        int newWidth = chosenDifficulty.getCols() * 40;
+        int newHeight = chosenDifficulty.getRows() * 40 + 75;
+        // Make sure it has a minimum width and height, based on ratio
+        if (newWidth < 400) {
+            double ratio = (double) newHeight / newWidth;
+            newWidth = 400;
+            newHeight = (int) (newWidth * ratio);
+        }
+        if (newHeight < 450) {
+            double ratio = (double) newWidth / newHeight;
+            newHeight = 450;
+            newWidth = (int) (newHeight * ratio);
+        }
+        stage.setWidth(newWidth);
+        stage.setHeight(newHeight);
 
         // Create game object
         game = new Game(chosenDifficulty);
 
         // Flag label
-        flagLabel = new Label("🚩 " + game.getRemainingFlags());
+        flagLabel = new Label("⚑ " + game.getRemainingFlags());
 
         // Reset button
         Button resetButton = new Button("RESET");
@@ -51,10 +63,23 @@ public class MainWindow {
         });
 
         // Timer label
-        Label timerLabel = new Label();
+        Label timerLabel = new Label("⏰ 0:00");
 
         // Upper horizontal info box
-        HBox infoBox = new HBox(flagLabel, resetButton, timerLabel);
+        Region leftSpacer = new Region();
+        Region rightSpacer = new Region();
+        HBox.setHgrow(leftSpacer, Priority.ALWAYS);
+        HBox.setHgrow(rightSpacer, Priority.ALWAYS);
+        HBox infoBox = new HBox(flagLabel, leftSpacer, resetButton, rightSpacer, timerLabel);
+
+        // Spreading the children (funi ahaha)
+        HBox.setHgrow(resetButton, Priority.ALWAYS);
+
+        // Add CSS classes to the horizontal info box
+        infoBox.getStyleClass().add("info-box");
+        flagLabel.getStyleClass().add("info-label");
+        timerLabel.getStyleClass().addAll("info-label");
+        resetButton.getStyleClass().add("reset-button");
 
         // Initialize the timeline
         timeline = new Timeline(new KeyFrame(Duration.millis(10), e -> {
@@ -94,7 +119,7 @@ public class MainWindow {
 
         // Load CSS
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/mainWindow.css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/main.css")).toExternalForm());
 
         // Return finished TitleWindow scene
         return scene;
@@ -190,7 +215,7 @@ public class MainWindow {
                 // Remove one flag from remaining flags
                 game.decrementRemainingFlags();
                 // Update flag label
-                flagLabel.setText("🚩 " + game.getRemainingFlags());
+                flagLabel.setText("⚑ " + game.getRemainingFlags());
             }
 
 
@@ -202,7 +227,7 @@ public class MainWindow {
             // Add one flag to remaining flags
             game.incrementRemainingFlags();
             // Update flag label
-            flagLabel.setText("🚩 " + game.getRemainingFlags());
+            flagLabel.setText("⚑ " + game.getRemainingFlags());
         }
     }
 
@@ -218,12 +243,12 @@ public class MainWindow {
 
         if (cell.isFlagged()) {
             btn.getStyleClass().add("mine-cell-flagged");
-            btn.setText("🚩");
+            btn.setText("⚑");
         } else if(cell.isRevealed()) {
             btn.getStyleClass().add("mine-cell-revealed");
 
             if (cell.isMine()) {
-                btn.setText("💥");
+                btn.setText("✸");
             } else {
                 int n = cell.getAdjacentMines();
                 if (n != 0) {
