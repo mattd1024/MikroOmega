@@ -6,9 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import minesweeper.model.Cell;
@@ -17,11 +15,14 @@ import minesweeper.model.Game;
 
 public class MainWindow {
     private Game game;
-    private Button cellButtons[][]; // For visually editing the cells (for logic, use game.getBoard())
     private Stage stage;
     private Difficulty chosenDifficulty;
     private double elapsedTime;
     private Timeline timeline;
+
+    private Button cellButtons[][]; // For visually editing the cells (for logic, use game.getBoard())
+    private Label flagLabel;
+    private Button resetButton;
 
     /**
      * Show the main window. Contains: main mine sweeping field
@@ -30,22 +31,40 @@ public class MainWindow {
         this.stage = stage;
         this.chosenDifficulty = chosenDifficulty;
 
+        // Change width and height of window based on cell count
+        stage.setWidth(chosenDifficulty.getCols() * 35);
+        stage.setHeight(chosenDifficulty.getRows() * 35 + 50);
+
+        // Create game object
         game = new Game(chosenDifficulty);
 
-        // Upper horizontal info box
-        Label testLabel = new Label("slepickametlicka");
+        // Flag label
+        flagLabel = new Label("🚩 " + game.getRemainingFlags());
+
+        // Reset button
+        resetButton = new Button("RESET");
+        resetButton.setOnAction(e -> {
+            elapsedTime = 0;
+            timeline.stop();
+            stage.setScene(new MainWindow().getScene(stage, chosenDifficulty));
+        });
+
+        // Timer label
         Label timerLabel = new Label();
-        HBox infoBox = new HBox(testLabel, timerLabel);
+
+        // Upper horizontal info box
+        HBox infoBox = new HBox(flagLabel, resetButton, timerLabel);
 
         // Initialize the timeline
         timeline = new Timeline(new KeyFrame(Duration.millis(10), e -> {
             elapsedTime += 0.01;
-            timerLabel.setText(String.format("%.2f", elapsedTime));
+            timerLabel.setText("⏰ " + String.format("%.2f", elapsedTime));
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         // Game box
         GridPane cellGrid = new GridPane();
+        cellGrid.getStyleClass().addAll("mine-grid");
         cellButtons = new Button[game.getRows()][game.getCols()];
         for (int r = 0; r < game.getRows(); r++) {
             for (int c = 0; c < game.getCols(); c++) {
@@ -55,21 +74,42 @@ public class MainWindow {
             }
         }
 
+        // Make cols and rows spread themselves across the window
+        for (int i = 0; i < game.getCols(); i++) {
+            ColumnConstraints cc = new ColumnConstraints();
+            cc.setPercentWidth(100.0 / game.getCols());
+            cellGrid.getColumnConstraints().add(cc);
+        }
+        for (int i = 0; i < game.getRows(); i++) {
+            RowConstraints rc = new RowConstraints();
+            rc.setPercentHeight(100.0 / game.getRows());
+            cellGrid.getRowConstraints().add(rc);
+        }
+        VBox.setVgrow(cellGrid, Priority.ALWAYS);
+        cellGrid.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
         // Root
         VBox root = new VBox(infoBox, cellGrid);
 
-        // Stage configuration
-        return new Scene(root, 300, 350);
+        // Load CSS
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles/mainWindow.css").toExternalForm());
+
+        // Return finished TitleWindow scene
+        return scene;
     }
 
     /**
-     * Creates buttons
+     * Creates grid buttons
      * @param r
      * @param c
      * @return
      */
     public Button createButton(int r, int c) {
         Button btn = new Button();
+        btn.getStyleClass().addAll("mine-cell", "mine-cell-unrevealed");
+        btn.setFocusTraversable(false);
+        btn.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         btn.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.PRIMARY) {
@@ -108,17 +148,27 @@ public class MainWindow {
         // 3. Is a mine -> explode
         if (cell.isMine()) {
             timeline.stop();
-            cellButtons[r][c].setText("💥");
+            cell.setRevealed(true);
+            updateButtonVisuals(r, c);
             stage.setScene(new EndWindow().getScene(stage, elapsedTime, chosenDifficulty, game.isWon()));
         }
 
         // 4. Is safe -> reveal
         if (!cell.isMine()) {
-            floodReveal(r, c);
+            game.floodReveal(r, c);
+            for (int row = 0; row < game.getRows(); row++) {
+                for (int col = 0; col < game.getCols(); col++) {
+                    updateButtonVisuals(row, col);
+                }
+            }
         }
         // Check if the game has been won
         if (game.isWon()) {
+            // Stuff to do before going to the end window
+
             timeline.stop();
+
+            // Go to the end window
             stage.setScene(new EndWindow().getScene(stage, elapsedTime, chosenDifficulty, game.isWon()));
         }
     }
@@ -138,52 +188,32 @@ public class MainWindow {
 
         // 2. Cell is not flagged -> flag it
         if (!cell.isFlagged()) {
-            cell.setFlagged(true);
-            updateButtonVisuals(r, c);
+            // Check if we have enough flags to use one
+            if (game.getRemainingFlags() > 0) {
+                cell.setFlagged(true);
+                updateButtonVisuals(r, c);
+
+                // Remove one flag from remaining flags
+                game.decrementRemainingFlags();
+                // Update flag label
+                flagLabel.setText("🚩 " + game.getRemainingFlags());
+            }
+
+
         // 3. Cell is flagged -> unflag it
         } else {
             cell.setFlagged(false);
             updateButtonVisuals(r, c);
+
+            // Add one flag to remaining flags
+            game.incrementRemainingFlags();
+            // Update flag label
+            flagLabel.setText("🚩 " + game.getRemainingFlags());
         }
     }
 
     /**
-     * Recursive method for revealing all empty cells around an empty cell
-     * @param r
-     * @param c
-     */
-    public void floodReveal(int r, int c) {
-        // Check if the coordinates are valid
-        if (!game.inBounds(r, c)) {
-            return;
-        }
-
-        // Get the respective cell
-        Cell cell = game.getCells()[r][c];
-
-        // If the cell is revealed or flagged, skip
-        if (cell.isRevealed() || cell.isFlagged()) {
-            return;
-        }
-
-        cell.setRevealed(true);
-        updateButtonVisuals(r, c);
-
-        // Go over surrounding cells without choosing the same one
-        if (cell.getAdjacentMines() == 0) {
-            for (int dr = -1; dr <= 1; dr++) {
-                for (int dc = -1; dc <= 1; dc++) {
-                    if (!(dr == 0 && dc == 0)) { // Dont want to call floodReveal on the same cell indefinitely
-                        floodReveal(r + dr, c + dc);
-                    }
-                }
-            }// Only flood reveal if there are no surrounding mines
-        }
-
-    }
-
-    /**
-     * Updates the UI of a cell basen on its stats
+     * Updates the UI of a cell based on its stats
      * @param r
      * @param c
      */
@@ -191,21 +221,29 @@ public class MainWindow {
         Cell cell = game.getCells()[r][c];
         Button btn = cellButtons[r][c];
 
+        btn.getStyleClass().removeAll("mine-cell-unrevealed", "mine-cell-flagged", "mine-cell-revealed");
+        btn.getStyleClass().removeIf(style -> style.startsWith("num-"));
+
         if (cell.isFlagged()) {
+            btn.getStyleClass().add("mine-cell-flagged");
             btn.setText("🚩");
         } else if(cell.isRevealed()) {
+            btn.getStyleClass().add("mine-cell-revealed");
+
             if (cell.isMine()) {
                 btn.setText("💥");
             } else {
                 int n = cell.getAdjacentMines();
                 if (n != 0) {
                     btn.setText(String.valueOf(n));
+                    btn.getStyleClass().add("num-" + n);
                 } else {
-                    btn.setText("  ");
+                    btn.setText("");
                 }
             }
         } else {
-            btn.setText("  ");
+            btn.getStyleClass().add("mine-cell-unrevealed");
+            btn.setText("");
         }
     }
 }

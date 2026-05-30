@@ -12,12 +12,16 @@ public class EndWindow {
         // Labels
         Label gameStatusLabel = new Label(won ? "You won!" : "You lost!");
         Label totalTimeLabel = new Label("Total time: " + String.format("%.2f", totalTime) + "s");
-        Label difficultyLabel = new Label("Difficulty: " + chosenDifficulty.toString());
+        Label difficultyLabel = new Label("Difficulty: " + chosenDifficulty.getDescription());
 
         // Root
         VBox root = new VBox(gameStatusLabel, totalTimeLabel, difficultyLabel);
 
-        // Scene
-        return new Scene(root, 300, 350);
+        // Load CSS
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("/styles/endWindow.css").toExternalForm());
+
+        // Return finished TitleWindow scene
+        return scene;
     }
 }

@@ -8,6 +8,7 @@ public class Game {
     private final int rows;
     private final int cols;
     private final int totalMines;
+    private int remainingFlags;
     private boolean isFirstClick;
 
     public Game(Difficulty chosenDifficulty) {
@@ -16,6 +17,7 @@ public class Game {
         this.cols = difficulty.getCols();
         this.totalMines = difficulty.getTotalMines();
         this.isFirstClick = true;
+        remainingFlags = totalMines;
 
         // Create empty board
         this.cells = new Cell[rows][cols];
@@ -76,6 +78,40 @@ public class Game {
     }
 
     /**
+     * Recursive method for revealing all empty cells around an empty cell
+     * @param r
+     * @param c
+     */
+    public void floodReveal(int r, int c) {
+        // Check if the coordinates are valid
+        if (!inBounds(r, c)) {
+            return;
+        }
+
+        // Get the respective cell
+        Cell cell = getCells()[r][c];
+
+        // If the cell is revealed or flagged, skip
+        if (cell.isRevealed() || cell.isFlagged()) {
+            return;
+        }
+
+        cell.setRevealed(true);
+
+        // Go over surrounding cells without choosing the same one
+        if (cell.getAdjacentMines() == 0) {
+            for (int dr = -1; dr <= 1; dr++) {
+                for (int dc = -1; dc <= 1; dc++) {
+                    if (!(dr == 0 && dc == 0)) { // Dont want to call floodReveal on the same cell indefinitely
+                        floodReveal(r + dr, c + dc);
+                    }
+                }
+            }// Only flood reveal if there are no surrounding mines
+        }
+
+    }
+
+    /**
      * Checks if the given coordinates r and c are valid for our board
      * @return true = valid, false = invalid
      */
@@ -100,6 +136,17 @@ public class Game {
             }
         }
         return true;
+    }
+
+    /**
+     * Reveals all cells
+     */
+    public void revealAll() {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                cells[r][c].setRevealed(true);
+            }
+        }
     }
 
 
@@ -135,4 +182,15 @@ public class Game {
         isFirstClick = firstClick;
     }
 
+    public void decrementRemainingFlags() {
+        remainingFlags--;
+    }
+
+    public void incrementRemainingFlags() {
+        remainingFlags++;
+    }
+
+    public int getRemainingFlags() {
+        return remainingFlags;
+    }
 }
