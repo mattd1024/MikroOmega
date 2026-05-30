@@ -2,6 +2,7 @@
 A minesweeper game built in JavaFX
 
 <img src="screenshots/game.png" width="200">
+
 *its literally just minesweeper..*
 
 ## Gameplay
