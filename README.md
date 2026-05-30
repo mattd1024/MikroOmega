@@ -1,13 +1,17 @@
 # Mikro omega/ Minesweeper
 A minesweeper game built in JavaFX
 
-<img src="screenshots/game.png" width="200">
+<img src="screenshots/game.png" width="350" alt="Minesweeper gameplay screenshot">
 
 *its literally just minesweeper..*
 
 ## Gameplay
+Choose your desired difficulty in the title screen
+
 Click and reveal cells without clicking on a mine!
 You can flag cells that you think are mines
+
+You will be shown your total time, difficulty and status at the end
 
 ## Difficulties
 - Easy: 9x9, 10 mines
