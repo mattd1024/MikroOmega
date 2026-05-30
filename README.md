@@ -1,7 +1,7 @@
 # Mikro omega/ Minesweeper
 A minesweeper game built in JavaFX
 
-![screenshot](screenshots/game.png)
+<img src="screenshots/game.png" width="200">
 *its literally just minesweeper..*
 
 ## Gameplay
