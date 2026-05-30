@@ -12,6 +12,10 @@ import com.pixelduke.window.Win11ThemeWindowManager;
 
 import java.io.InputStream;
 
+/**
+ * JavaFX application class
+ * Run the program from Main, not MainApp
+ */
 public class MainApp extends Application {
     private final String WINDOWS_TITLEBAR_COLOR = "0a0a0a";
     private final String ICON_PATH = "/images/icon.png";
