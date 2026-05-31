@@ -10,7 +10,7 @@ import minesweeper.model.Difficulty;
 
 import java.util.Objects;
 
-public class TitleWindow {
+public class TitleWindow implements Window {
     private final int WINDOW_WIDTH = 400;
     private final int WINDOW_HEIGHT = 450;
     private final int MAX_CUSTOM_ROWS = 30;
@@ -18,8 +18,9 @@ public class TitleWindow {
     private final int MAX_CUSTOM_MINES = 1491;
 
     /**
-     * Show the menu screen. Contains: start button, choose difficulty, end button.
+     * Get the title window scene
      */
+    @Override
     public Scene getScene(Stage stage) {
         // Set window size
         stage.setWidth(WINDOW_WIDTH);
@@ -105,7 +106,7 @@ public class TitleWindow {
                 chosenDifficulty = (Difficulty) group.getSelectedToggle().getUserData();
             }
 
-            stage.setScene(new MainWindow().getScene(stage, chosenDifficulty));
+            stage.setScene(new MainWindow(chosenDifficulty).getScene(stage));
         });
 
         // Exit button

@@ -15,21 +15,25 @@ import minesweeper.model.Game;
 
 import java.util.Objects;
 
-public class MainWindow {
+public class MainWindow implements Window {
     private Game game;
     private Stage stage;
-    private Difficulty chosenDifficulty;
+    private final Difficulty chosenDifficulty;
     private double elapsedTime;
     private Timeline timeline;
     private Button[][] cellButtons; // For visually editing the cells (for logic, use game.getBoard())
     private Label flagLabel;
 
-    /**
-     * Show the main window. Contains: main mine sweeping field
-     */
-    public Scene getScene(Stage stage, Difficulty chosenDifficulty) {
-        this.stage = stage;
+    public MainWindow(Difficulty chosenDifficulty) {
         this.chosenDifficulty = chosenDifficulty;
+    }
+
+    /**
+     * Get the main window scene
+     */
+    @Override
+    public Scene getScene(Stage stage) {
+        this.stage = stage;
 
         // Change width and height of window based on cell count
         int newWidth = chosenDifficulty.getCols() * 40;
@@ -59,7 +63,7 @@ public class MainWindow {
         resetButton.setOnAction(e -> {
             elapsedTime = 0;
             timeline.stop();
-            stage.setScene(new MainWindow().getScene(stage, chosenDifficulty));
+            stage.setScene(new MainWindow(chosenDifficulty).getScene(stage));
         });
 
         // Timer label
@@ -171,7 +175,7 @@ public class MainWindow {
             timeline.stop();
             cell.setRevealed(true);
             updateButtonVisuals(r, c);
-            stage.setScene(new EndWindow().getScene(stage, elapsedTime, chosenDifficulty, game.isWon()));
+            stage.setScene(new EndWindow(elapsedTime, chosenDifficulty, game.isWon()).getScene(stage));
         }
 
         // 4. Is safe -> reveal
@@ -190,7 +194,7 @@ public class MainWindow {
             timeline.stop();
 
             // Go to the end window
-            stage.setScene(new EndWindow().getScene(stage, elapsedTime, chosenDifficulty, game.isWon()));
+            stage.setScene(new EndWindow(elapsedTime, chosenDifficulty, game.isWon()).getScene(stage));
         }
     }
 

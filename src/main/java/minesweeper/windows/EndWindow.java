@@ -5,16 +5,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import minesweeper.MainApp;
 import minesweeper.model.Difficulty;
 
 import java.util.Objects;
 
-public class EndWindow {
+public class EndWindow implements Window {
     private final int WINDOW_WIDTH = 400;
     private final int WINDOW_HEIGHT = 450;
+    private final double totalTime;
+    private final Difficulty chosenDifficulty;
+    private final boolean won;
 
-    public Scene getScene(Stage stage, double totalTime, Difficulty chosenDifficulty, boolean won) {
+
+    public EndWindow(double totalTime, Difficulty chosenDifficulty, boolean won) {
+        this.totalTime =  totalTime;
+        this.chosenDifficulty = chosenDifficulty;
+        this.won = won;
+    }
+
+    /**
+     * Get the end window scene
+     */
+    @Override
+    public Scene getScene(Stage stage) {
         // Change size of window
         stage.setWidth(WINDOW_WIDTH);
         stage.setHeight(WINDOW_HEIGHT);
@@ -27,7 +40,9 @@ public class EndWindow {
         // Title button
         Button titleButton = new Button("Title");
         titleButton.setOnAction(e -> {
-            new MainApp().start(stage);
+            stage.setScene(new TitleWindow().getScene(stage));
+            stage.setWidth(450);
+            stage.setHeight(500);
         });
 
         // Exit button
