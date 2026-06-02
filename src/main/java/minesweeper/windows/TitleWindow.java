@@ -15,7 +15,7 @@ public class TitleWindow implements Window {
     private final int WINDOW_HEIGHT = 450;
     private final int MAX_CUSTOM_ROWS = 30;
     private final int MAX_CUSTOM_COLS = 50;
-    private final int MAX_CUSTOM_MINES = 1491;
+    private final int MAX_CUSTOM_MINES = 1490;
 
     /**
      * Get the title window scene
