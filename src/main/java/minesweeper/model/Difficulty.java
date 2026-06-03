@@ -19,6 +19,9 @@ public class Difficulty {
         this.totalMines = mines;
     }
 
+    /**
+     * Returns a boolean if its valid
+     */
     public boolean isValid() {
         if (rows >= 2 && cols >= 2 && totalMines > 0 && totalMines < rows * cols - 9) {
             return true;
@@ -26,6 +29,9 @@ public class Difficulty {
         return false;
     }
 
+    /**
+     * Returns a string about an error about the current difficulty
+     */
     public String getValidationError() {
         if (rows < 2 || cols < 2) {
             return "Board must be atleast 2x2";

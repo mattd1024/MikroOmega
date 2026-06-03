@@ -47,8 +47,6 @@ public class MainApp extends Application {
         stage.show();
 
         // Set a specific color for the Windows 11 title bar
-        // this MIGHT crash on win 10 idk
-        System.err.println("WARNING: Topbar color styling is implemented for Windows 11, windows 10 is untested");
         ThemeWindowManager base = ThemeWindowManagerFactory.create();
         base.setDarkModeForWindowFrame(stage, true);
 

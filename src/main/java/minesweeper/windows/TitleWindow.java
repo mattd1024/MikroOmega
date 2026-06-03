@@ -86,6 +86,7 @@ public class TitleWindow implements Window {
         VBox colsDifficulty = new VBox(new Label("Cols"), colsSpinner);
         VBox minesDifficulty = new VBox(new Label("Mines"), minesSpinner);
 
+        //Add them to a hbox
         HBox customDifficultyOptions = new HBox(rowsDifficulty,colsDifficulty,minesDifficulty);
 
         // Make spinners visible only if the custom radio button is selected
