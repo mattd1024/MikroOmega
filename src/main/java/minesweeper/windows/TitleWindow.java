@@ -76,6 +76,11 @@ public class TitleWindow implements Window {
         colsSpinner.setEditable(true);
         minesSpinner.setEditable(true);
 
+        // Prevent text from being typed into spinners (only want integers)
+        restrictToNumbers(rowsSpinner);
+        restrictToNumbers(colsSpinner);
+        restrictToNumbers(minesSpinner);
+
         // Custom difficulty rows cols mines
         VBox rowsDifficulty = new VBox(new Label("Rows"), rowsSpinner);
         VBox colsDifficulty = new VBox(new Label("Cols"), colsSpinner);
@@ -135,4 +140,16 @@ public class TitleWindow implements Window {
         // Return finished TitleWindow scene
         return scene;
     }
+
+    /**
+     * Restricts spinners to only use integers
+     */
+    private void restrictToNumbers(Spinner<Integer> spinner) {
+        spinner.getEditor().textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                spinner.getEditor().setText(oldVal);
+            }
+        });
+    }
+
 }
